@@ -1,6 +1,12 @@
 # Start with slim Python 3.13 image
 FROM python:3.13.11-slim
 
+# Install system dependencies required by psycopg
+RUN apt-get update && apt-get install -y \
+    libpq-dev \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
+
 # Copy uv binary from official uv image (multi-stage build pattern)
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/
 
@@ -20,4 +26,4 @@ RUN uv sync --locked
 COPY ingest_data.py .
 
 # Set entry point
-ENTRYPOINT ["python", "ingest_data.py"]
+ENTRYPOINT ["uv", "run", "python", "ingest_data.py"]
