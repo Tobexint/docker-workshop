@@ -1,2 +1,2 @@
 # docker-workshop
-Workshop codespace
+Containerized data ingestion pipeline.
